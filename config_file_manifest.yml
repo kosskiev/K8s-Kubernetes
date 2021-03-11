@@ -1,0 +1,24 @@
+# Пример простого config файла сохраняю его в 
+
+apiVersion : v1
+kind: Pod  #(что именно создавать, в нашем примере Pod)
+metadata: 
+  name: somename (имя poda, только маленькими буквами)
+spec:
+  containers: #(какой контейнер запускать)
+    - name : container Apache
+      image: httpd:latest
+      ports:
+      - containerPort: 80
+
+# запускаю файл 
+kubectl apply -f config_file_manifest.yml #(-f это файл, config_file_manifest.yml - название файла который нужно запустить)
+# если вносили изменения нужно сначала убить pods и заново запустить
+kubectl delete -f name.yml
+
+kubectl get pods
+#посмотрим конф pods
+kubectl describe pods somename
+
+# пробросим порт чтобі зайти на него
+

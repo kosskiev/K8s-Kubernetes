@@ -1,0 +1,29 @@
+# Pods (Поды) — базовые строительные блоки Kubernetes
+# Создадим и будем управлять pods
+
+# проверим бегущие ноды
+kubectl get nodes
+
+# проверим pods на сервере
+kubestl get pods
+
+# создаем pods назовем его mypods поместим в него наш докер контейнер и откроем 80 порт
+kubectl run mypods --image=kosskyiv/k8sphp:latest --port=80
+
+# чтобы увидеть наш pods нужно перенаправить порт с моей машины на порт в кубер кластере
+kubectl port-forward helloympods 7788:80
+
+# удалить pods
+kubectl delete pods mypods
+
+# больше информации о запущеных pods
+kubectl describe pods mypods
+
+# запустить любую команду на нашем pods(в примере узнаем время)
+kubectl exec mypods -- date
+
+# можем запустить интерактивно команду shell (он запустит и мы останемся внутри poda)
+kubectl exec -it mypods sh
+
+# посмотреть лог файлы
+kubectl logs mypods

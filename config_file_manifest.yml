@@ -1,9 +1,14 @@
-# Пример простого config файла сохраняю его в 
-
+# Пример простого config файла 
+# можно менять без удаления только image (если вносили изменения нужно сначала убить pods и заново запустить)
 apiVersion : v1
 kind: Pod  #(что именно создавать, в нашем примере Pod)
 metadata: 
   name: somename (имя poda, только маленькими буквами)
+  labels:
+    env  : prod
+    app  : main
+    tier : fontend
+    owner: Patrakov_Kostiantyn
 spec:
   containers: #(какой контейнер запускать)
     - name : container Apache
@@ -13,7 +18,7 @@ spec:
 
 # запускаю файл 
 kubectl apply -f config_file_manifest.yml #(-f это файл, config_file_manifest.yml - название файла который нужно запустить)
-# если вносили изменения нужно сначала убить pods и заново запустить
+# если вносили изменения нужно сначала убить pods и заново запустить (можно менять без удаления только image)
 kubectl delete -f name.yml
 
 kubectl get pods

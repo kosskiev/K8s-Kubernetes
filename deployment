@@ -1,0 +1,26 @@
+# Создание и Управление - DEPLOYMENTS
+# проверить бегущие Deploymunts
+kubectl get deploy
+# создать с docker image
+# Залогинтся на Doker
+docker login
+
+# создать с docker image 
+kubectl create deployments nameproject(название) --image kosskyiv/k8sphp:latest (название image)
+# проверить бегущие Deploymunts
+kubectl get deploy
+
+# просмотреть информацию 
+kubectl describe deployments.apps koss
+
+# чтобы всегда бежало заданное количество pods(в данном случае 3)
+ kubectl scale deployment koss --replicas=3
+
+# теперь сделаем autoscaling
+kubectl autoscale deployment koss --max=6 --min=4 --cpu-percent=80
+kubectl get hpa
+
+# история всех deploy
+
+#
+#

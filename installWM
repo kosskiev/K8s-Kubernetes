@@ -1,0 +1,56 @@
+# Это команды для поднятия кубернетеса на всех виртуальных машинах
+# обновляем 
+sudo apt-get update
+# сетапим докер
+sudo apt-get install docker.io
+docker ––version
+# запускае докер
+sudo systemctl enable docker
+sudo systemctl status docker
+sudo systemctl start docker
+# Ставим курс если нет и ставим ключ подписи
+sudo apt-get install curl
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add
+# репозиторий кубера
+sudo apt-add-repository "deb http://apt.kubernetes.io/ kubernetes-xenial main"
+# установим инструменты кубера и отключим авто обновление 
+sudo apt-get install kubeadm kubelet kubectl
+sudo apt-mark hold kubeadm kubelet kubectl
+kubeadm version
+# разворачиваем кубер
+# сначала отключим своп (может выдать ошибку, тогда sudo su и потом уже команду )
+sudo swapoff –a
+____________________________________________________________________________
+# теперь команды отделтно для Master и для worker
+# выбираем где будет мастер и запускаем команды
+# сначала переименуем
+sudo hostnamectl set-hostname master-node
+# переименуем worker ноды
+sudo hostnamectl set-hostname worker01
+
+# инициализируем на Master узле 
+sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+# он выдаст вконце kubeadm join и еще 2 параметра - нужно скопировать и запустить ее на Worker node (на всех рабочих узлах)
+
+# создаем каталог - это все на Master узле 
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+# это способ разрешить связь между различными узлами в кластере
+sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+# проверим что все запущенно и работает 
+kubectl get pods --all-namespaces
+____________________________________________________________________________
+# Это все для worker ноды (всех рабочих нод)
+# переименуем worker ноды
+sudo hostnamectl set-hostname worker01
+# вставим раннее скопированный из master ноды команду для присоединения
+примерный вид kubeadm join --discovery-token abcdef.1234567890abcdef --discovery-token-ca-cert-hash sha256:1234..cdef 1.2.3.4:6443
+____________________________________________________________________________
+# на мастере проверим ноды бегущие
+kubectl get nodes
+#
+#
+#
+#
+#

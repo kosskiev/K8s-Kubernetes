@@ -30,6 +30,7 @@ sudo hostnamectl set-hostname worker01
 
 # инициализируем на Master узле 
 sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+# может выдать ошибку нужно отключить swapoff (после перезагрузки он снова блокирует)
 # он выдаст вконце kubeadm join и еще 2 параметра - нужно скопировать и запустить ее на Worker node (на всех рабочих узлах)
 
 # создаем каталог - это все на Master узле 
